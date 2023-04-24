@@ -1,13 +1,13 @@
-import {Server} from 'socket.io';
+import { Server } from 'socket.io';
 import { Pieces } from '../entities';
 
 const io = new Server({
-    cors:{
+    cors: {
         origin: '*'
     }
 });
 
-let positions:(Pieces | null)[][];
+let positions: (Pieces | null)[][];
 
 io.on('connection', (socket) => {
     console.log('user : ' + socket.id + " connected");
@@ -15,14 +15,14 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         socket.disconnect()
         console.log('user : ' + socket.id + " disconnected");
-      });
+    });
 
-      socket.on('positionsToBack', (data) => {
-          positions = data;
-          console.log(positions);
-      })
-      //socket.broadcast (tout le monde)
-    //    socket.emit('positionsToFront', positions);
+    socket.on('positionsToBack', (data) => {
+        positions = data;
+        console.log(positions);
+        socket.broadcast.emit('positionsToFront', positions);
+    })
+
 });
 
 
