@@ -8,6 +8,7 @@ const io = new Server({
 });
 
 let positions: (Pieces | null)[][];
+let myTurn = true;
 
 io.on('connection', (socket) => {
     console.log('user : ' + socket.id + " connected");
@@ -22,6 +23,10 @@ io.on('connection', (socket) => {
         console.log(positions);
         socket.broadcast.emit('positionsToFront', positions);
     })
+
+    if (io.sockets.sockets.size === 1) {
+        socket.emit('myTurn')
+    }
 
 });
 
